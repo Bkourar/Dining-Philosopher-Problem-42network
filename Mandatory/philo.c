@@ -24,4 +24,5 @@ int	main(int ac, char **av)
 	parsing(ac, av, &phi);
 	i = phi->set->nb_of_p;
 	run_threads(&phi, i);
+	monitoring(&phi);
 }

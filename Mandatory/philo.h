@@ -23,9 +23,9 @@
 # include <stdbool.h>
 # include <errno.h>
 
-# define bool _Bool
-# define true 1
-# define false 0
+#  define bool _Bool
+#   define true 1
+#    define false 0
 
 typedef pthread_mutex_t t_mtx;
 typedef struct timeval t_ms;
@@ -49,11 +49,13 @@ typedef struct philo
 	int				id;
 	int				l_f;
 	int				r_f;
+	int				n_meal;
 	pthread_t		th;
 	t_set			*set;
 	t_mtx			*writing;
 	t_mtx			*dining;
 	t_mtx			ml_eat;
+	t_mtx			m_meal;
 	size_t			last_eat;
 }					t_ph;
 
@@ -68,7 +70,7 @@ int		white_space(char c);
 int		ft_isdigit(char c);
 
 //--------------------------------------------
-int		chopsticks(t_ph **ph, bool b, size_t start);
+int		chopsticks(t_ph **ph, bool b);
 void	intial_metux(t_ph **ph, int size, size_t now);
 void	monitoring(t_ph **ph);
 
@@ -78,8 +80,9 @@ size_t	get_current_time(void);
 size_t	time_to_die(t_ph *ph, size_t now);
 
 //--------------------------------------------
-int		sleeping(t_ph **ph, size_t start);
-int		thinking(t_ph **ph, size_t start);
-int		eating(t_ph **ph, size_t start);
+int		sleeping(t_ph **ph);
+int		thinking(t_ph **ph);
+int		eating(t_ph **ph);
+int		writing(t_ph **ph, char *str, size_t now);
 
 #endif

@@ -12,72 +12,51 @@
 
 #include "philo.h"
 
-int	eating(t_ph **ph, size_t start)
+int	eating(t_ph **ph)
 {
 	t_ph	*tp;
-	size_t	now;
 
 	tp = (*ph);
-	pthread_mutex_lock(tp->writing);
-	now = get_current_time() - start;
-	pthread_mutex_unlock(tp->writing);
-	if (chopsticks(&tp, true, now))
+	if (chopsticks(&tp, true))
 		return (1);
-	pthread_mutex_lock(tp->dining);
-	if (tp->set->died == true)
-	{
-		pthread_mutex_unlock(tp->dining);
-		return (1);
-	}
-	pthread_mutex_unlock(tp->dining);
-	printf("%zu  %d  is eating\n", now, tp->id);
+	pthread_mutex_lock(&tp->m_meal);
+	tp->n_meal++;
+	pthread_mutex_unlock(&tp->m_meal);
 	if (u_sleep(tp->set->tt_e))
 		perror("gettimeofday");
 	pthread_mutex_lock(&tp->ml_eat);
-	tp->last_eat = get_current_time() - start;
+	tp->last_eat = get_current_time() - tp->set->start;
 	pthread_mutex_unlock(&tp->ml_eat);
-	chopsticks(&tp, false, start);
+	chopsticks(&tp, false);
 	return (0);
 }
 
-int	sleeping(t_ph **ph, size_t start)
+int	sleeping(t_ph **ph)
 {
 	t_ph	*tp;
-	size_t	now;
+	size_t  now;
 
 	tp = (*ph);
 	pthread_mutex_lock(tp->writing);
-	now = get_current_time() - start;
+	now = get_current_time() - tp->set->start;
 	pthread_mutex_unlock(tp->writing);
-	pthread_mutex_lock(tp->dining);
-	if (tp->set->died == true)
-	{
-		pthread_mutex_unlock(tp->dining);
+	if (writing(&tp, "is sleeping", now))
 		return (1);
-	}
-	pthread_mutex_unlock(tp->dining);
-	printf("%zu  %d  is sleeping\n", now, tp->id);
 	if (u_sleep(tp->set->tt_s))
 		perror("gettimeofday");
 	return (0);
 }
 
-int	thinking(t_ph **ph, size_t start)
+int	thinking(t_ph **ph)
 {
 	t_ph	*tp;
-	size_t	now;
+	size_t  now;
 
 	tp = (*ph);
 	pthread_mutex_lock(tp->writing);
-	now = get_current_time() - start;
+	now = get_current_time() - tp->set->start;
 	pthread_mutex_unlock(tp->writing);
-	pthread_mutex_lock(tp->dining);
-	if (tp->set->died == true)
-	{
-		pthread_mutex_unlock(tp->dining);
+	if (writing(&tp, "is thinking", now))
 		return (1);
-	}
-	pthread_mutex_unlock(tp->dining);
-	printf("%zu  %d  is thinking\n", now, tp->id);
 	return (0);
 }

@@ -12,17 +12,19 @@
 
 #include "philo.h"
 
-static int	day(t_ph **ph, size_t init)
+int	writing(t_ph **ph, char *str, size_t now)
 {
-	t_ph		*tp;
+	t_ph	*tp;
 
 	tp = (*ph);
-	if (eating(&tp, init))
+	pthread_mutex_lock(tp->dining);
+	if (tp->set->died == true)
+	{
+		pthread_mutex_unlock(tp->dining);
 		return (1);
-	if (sleeping(&tp, init))
-		return (1);
-	if (thinking(&tp, init))
-		return (1);
+	}
+	pthread_mutex_unlock(tp->dining);
+	printf("%zu  %d  %s\n", now, tp->id, str);
 	return (0);
 }
 
@@ -35,7 +37,11 @@ void	*routine(void *arg)
 		u_sleep(ph->set->tt_e);
 	while (1)
 	{
-		if (day(&ph, ph->set->start))
+        	if (eating(&ph))
+			break ;
+        	if (sleeping(&ph))
+			break ;
+        	if (thinking(&ph))
 			break ;
 	}
 	return (NULL);

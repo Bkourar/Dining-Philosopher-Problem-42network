@@ -56,6 +56,7 @@ t_ph	*creat_data(int *inf, t_ph **ph)
 		node[i].id = i + 1;
 		node[i].l_f = i;
 		node[i].r_f = (i + 1) % inf[0];
+		node[i].n_meal = 0;
 		node[i].set = head;
 		node[i].writing = &node[i].set->wr;
 		node[i].dining = &node[i].set->md;

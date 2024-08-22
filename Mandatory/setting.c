@@ -15,50 +15,37 @@
 void	intial_metux(t_ph **ph, int size, size_t now)
 {
 	int		i;
-	int		mx;
-	t_ph	*tp;
+	t_ph		*tp;
 
 	i = 0;
 	tp = (*ph);
-	mx = tp[i].set->nb_of_p;
 	tp[i].set->start = now;
 	while (i < size)
 	{
 		tp[i].last_eat = 0;
 		pthread_mutex_init(&tp[i].ml_eat, NULL);
+		pthread_mutex_init(&tp[i].m_meal, NULL);
 		i++;
 	}
 }
 
-int	chopsticks(t_ph **ph, bool b, size_t now)
+int	chopsticks(t_ph **ph, bool b)
 {
 	t_ph	*tp;
+	size_t  now;
 
 	tp = (*ph);
+	pthread_mutex_lock(tp->writing);
+	now = get_current_time() - tp->set->start;
+	pthread_mutex_unlock(tp->writing);
 	if (b == true)
 	{
 		pthread_mutex_lock(&tp->set->fork[tp->l_f]);
-		pthread_mutex_lock(tp->dining);
-		if (tp->set->died == true)
-		{
-			pthread_mutex_unlock(tp->dining);
+		if (writing(&tp, "has take a fork", now))
 			return (1);
-		}
-		pthread_mutex_unlock(tp->dining);
-		// pthread_mutex_lock(tp->writing);
-		printf("%zu  %d  has take a fork 1\n", now, tp->id);
-		// pthread_mutex_unlock(tp->writing);
 		pthread_mutex_lock(&tp->set->fork[tp->r_f]);
-		pthread_mutex_lock(tp->dining);
-		if (tp->set->died == true)
-		{
-			pthread_mutex_unlock(tp->dining);
+		if (writing(&tp, "has take a fork", now))
 			return (1);
-		}
-		pthread_mutex_unlock(tp->dining);
-		// pthread_mutex_lock(tp->writing);
-		printf("%zu  %d  has take a fork 2\n", now, tp->id);
-		// pthread_mutex_unlock(tp->writing);
 	}
 	else
 	{

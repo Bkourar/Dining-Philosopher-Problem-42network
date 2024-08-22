@@ -6,62 +6,60 @@
 /*   By: bikourar <bikourar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 06:58:11 by bikourar          #+#    #+#             */
-/*   Updated: 2024/08/20 09:24:38 by bikourar         ###   ########.fr       */
+/*   Updated: 2024/08/22 00:56:34 by bikourar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
 
-t_ph	*allocation(int size)
+t_ph	*allocation(int *inf, t_set **st)
 {
-	t_ph	*node;
 	int		i;
+	t_ph	*node;
 
-	node = (t_ph *)malloc(sizeof(t_ph) * size);
+	node = (t_ph *)malloc(sizeof(t_ph) * inf[0]);
 	if (!node)
 		return (NULL);
-	node->th = (pthread_t *)malloc(sizeof(pthread_t) * size);
-	if (!node->th)
+	*st = (t_set *)malloc(sizeof(t_set));
+	if (!(*st))
+			return (NULL);
+	(*st)->nb_of_p = inf[0];
+	(*st)->tt_d = inf[1];
+	(*st)->tt_e = inf[2];
+	(*st)->tt_s = inf[3];
+	(*st)->nb_of_m = inf[4];
+	(*st)->died = false;
+	(*st)->fork = (t_mtx *)malloc(sizeof(t_mtx) * inf[0]);
+	if (!(*st)->fork)
 		return (NULL);
+	pthread_mutex_init(&(*st)->wr, NULL);
+	pthread_mutex_init(&(*st)->md, NULL);
 	i = -1;
-	while (++i < size)
-	{
-		node[i].set = malloc(sizeof(t_set));
-		if (!node[i].set)
-			return (NULL);
-		node[i].fork = (t_mtx *)malloc(sizeof(t_mtx) * size);
-		if (!node[i].fork)
-			return (NULL);
-	}
+	while (++i < inf[0])
+		pthread_mutex_init(&(*st)->fork[i], NULL);
 	return (node);
 }
 
 t_ph	*creat_data(int *inf, t_ph **ph)
 {
 	t_ph	*node;
-	t_mtx	*wr;
-	t_mtx	*die;
+	t_set	*head;
 	int		i;
 
-	node = allocation(inf[0]);
-	wr = (t_mtx *)malloc(sizeof(t_mtx));
-	die = (t_mtx *)malloc(sizeof(t_mtx));
-	if (!wr || !node || !die)
+	node = allocation(inf, &head);
+	if (!node)
 		(write(2, "allocation fail\n", 17), exit(2));
 	i = -1;
 	while (++i < inf[0])
 	{
-		node[i].set->nb_of_p = inf[0];
-		node[i].set->tt_d = inf[1];
-		node[i].set->tt_e = inf[2];
-		node[i].set->tt_s = inf[3];
-		node[i].set->nb_of_m = inf[4];
-		node[i].writing = wr;
-		node[i].dining = die;
-	}
-	i = -1;
-	while (++i < inf[0])
 		node[i].id = i + 1;
+		node[i].l_f = i;
+		node[i].r_f = (i + 1) % inf[0];
+		node[i].set = head;
+		node[i].writing = &node[i].set->wr;
+		node[i].dining = &node[i].set->md;
+		pthread_mutex_init(&node[i].ml_eat, NULL);
+	}
 	return ((*ph) = node, (*ph));
 }

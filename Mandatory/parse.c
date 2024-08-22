@@ -6,13 +6,13 @@
 /*   By: bikourar <bikourar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 06:56:19 by bikourar          #+#    #+#             */
-/*   Updated: 2024/08/18 07:43:50 by bikourar         ###   ########.fr       */
+/*   Updated: 2024/08/21 23:58:04 by bikourar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static int	check_argement(const char *str, int arg_c)
+static int	check_argement(const char *str, int ac)
 {
 	int	number;
 	int	i;
@@ -25,7 +25,9 @@ static int	check_argement(const char *str, int arg_c)
 	else if (str[i] != '\0' && str[i] == '-')
 		return (0);
 	number = ft_atoi(&str[i]);
-	if (number <= 0 || (arg_c == 1 && number > 200))
+	if (number <= 0 || (ac == 1 && number > 200))
+		return (0);
+	else if ((ac == 2 || ac == 3 || ac == 4 ) && number < 60)
 		return (0);
 	return (number);
 }

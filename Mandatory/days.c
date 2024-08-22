@@ -6,7 +6,7 @@
 /*   By: bikourar <bikourar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 19:22:55 by bikourar          #+#    #+#             */
-/*   Updated: 2024/08/20 13:30:36 by bikourar         ###   ########.fr       */
+/*   Updated: 2024/08/22 01:03:11 by bikourar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,50 +18,66 @@ int	eating(t_ph **ph, size_t start)
 	size_t	now;
 
 	tp = (*ph);
-	now = get_current_time() - start;
-	pthread_mutex_lock(&tp->fork[tp->l_f]);
-	printf("%zu  %d  has take a fork 1\n", now, tp->id);
-	pthread_mutex_lock(&tp->fork[tp->r_f]);
-	printf("%zu  %d  has take a fork 2\n", now, tp->id);
 	pthread_mutex_lock(tp->writing);
-	printf("%zu  %d  is eating\n", now, tp->id);
+	now = get_current_time() - start;
 	pthread_mutex_unlock(tp->writing);
-	if (time_to_die(&tp, now))
+	if (chopsticks(&tp, true, now))
+		return (1);
+	pthread_mutex_lock(tp->dining);
+	if (tp->set->died == true)
 	{
-		pthread_mutex_lock(tp->writing);
-		printf("%zu  %d  died\n", get_current_time() - tp->in_time, tp->id);
-		pthread_mutex_unlock(tp->dining), exit(1);
+		pthread_mutex_unlock(tp->dining);
+		return (1);
 	}
+	pthread_mutex_unlock(tp->dining);
+	printf("%zu  %d  is eating\n", now, tp->id);
 	if (u_sleep(tp->set->tt_e))
 		perror("gettimeofday");
-	tp->last_eat = get_current_time();
-	pthread_mutex_unlock(&tp->fork[tp->l_f]);
-	pthread_mutex_unlock(&tp->fork[tp->r_f]);
+	pthread_mutex_lock(&tp->ml_eat);
+	tp->last_eat = get_current_time() - start;
+	pthread_mutex_unlock(&tp->ml_eat);
+	chopsticks(&tp, false, start);
 	return (0);
 }
 
-void	sleeping(t_ph **ph, size_t start)
+int	sleeping(t_ph **ph, size_t start)
 {
 	t_ph	*tp;
 	size_t	now;
 
 	tp = (*ph);
-	now = get_current_time() - start;
 	pthread_mutex_lock(tp->writing);
-	printf("%zu  %d  is sleeping\n", now, tp->id);
+	now = get_current_time() - start;
 	pthread_mutex_unlock(tp->writing);
+	pthread_mutex_lock(tp->dining);
+	if (tp->set->died == true)
+	{
+		pthread_mutex_unlock(tp->dining);
+		return (1);
+	}
+	pthread_mutex_unlock(tp->dining);
+	printf("%zu  %d  is sleeping\n", now, tp->id);
 	if (u_sleep(tp->set->tt_s))
 		perror("gettimeofday");
+	return (0);
 }
 
-void	thinking(t_ph **ph, size_t start)
+int	thinking(t_ph **ph, size_t start)
 {
 	t_ph	*tp;
 	size_t	now;
 
 	tp = (*ph);
-	now = get_current_time() - start;
 	pthread_mutex_lock(tp->writing);
-	printf("%zu  %d  is thinking\n", now, tp->id);
+	now = get_current_time() - start;
 	pthread_mutex_unlock(tp->writing);
+	pthread_mutex_lock(tp->dining);
+	if (tp->set->died == true)
+	{
+		pthread_mutex_unlock(tp->dining);
+		return (1);
+	}
+	pthread_mutex_unlock(tp->dining);
+	printf("%zu  %d  is thinking\n", now, tp->id);
+	return (0);
 }

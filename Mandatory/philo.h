@@ -61,28 +61,30 @@ typedef struct philo
 
 
 void	parsing(int	ac, char **av, t_ph **phi);
+void	run_threads(t_ph **ph, int size);
 t_ph	*creat_data(int *data, t_ph **ph);
 t_ph	*allocation(int *inf, t_set **st);
-void	run_threads(t_ph **ph, int size);
 int		ft_atoi(const char *str);
-size_t	ft_strlen(const char *s);
 int		white_space(char c);
 int		ft_isdigit(char c);
+size_t	ft_strlen(const char *s);
 
 //--------------------------------------------
-int		chopsticks(t_ph **ph, bool b);
 void	intial_metux(t_ph **ph, int size, size_t now);
+void	destroy_mutex(t_ph **ph, int size);
 void	monitoring(t_ph **ph);
+int		chopsticks(t_ph **ph, bool b);
 
 //--------------------------------------------
-int		u_sleep(size_t time_u_want);
-size_t	get_current_time(void);
 size_t	time_to_die(t_ph *ph, size_t now);
+size_t	get_current_time(void);
+int		u_sleep(size_t time_u_want);
 
 //--------------------------------------------
-int		sleeping(t_ph **ph);
-int		thinking(t_ph **ph);
-int		eating(t_ph **ph);
 int		writing(t_ph **ph, char *str, size_t now);
+int		thinking(t_ph **ph);
+int		sleeping(t_ph **ph);
+int		eating(t_ph **ph);
 
+void f();
 #endif

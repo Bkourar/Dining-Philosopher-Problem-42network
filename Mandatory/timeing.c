@@ -43,6 +43,7 @@ size_t	time_to_die(t_ph *ph, size_t now)
 	pthread_mutex_lock(&tp->ml_eat);
 	check_time = now - tp->last_eat;
 	pthread_mutex_unlock(&tp->ml_eat);
+	// printf("[%zu]\n", check_time);
 	if (check_time >= (size_t)tp->set->tt_d)
 		return (1);
 	return (0);
@@ -57,49 +58,49 @@ static int	nb_of_meals(t_ph **ph)
         j = 0;
 	i = -1;
 	tp = (*ph);
-        while (++i < tp[0].set->nb_of_p)
-        {
-                pthread_mutex_lock(&tp->m_meal);
-                if (tp[i].n_meal >= tp[0].set->nb_of_m)
-                        j++;
-                pthread_mutex_unlock(&tp->m_meal);
-        	if (j == tp[0].set->nb_of_p)
-                	return (1);
-        }
+	while (tp[0].set->nb_of_m && ++i < tp[0].set->nb_of_p)
+	{
+		pthread_mutex_lock(&tp[i].m_meal);
+		if (tp[i].n_meal >= tp[0].set->nb_of_m)
+				j++;
+		pthread_mutex_unlock(&tp[i].m_meal);
+		if (j == tp[0].set->nb_of_p)
+				return (1);
+	}
 	return (0);
 }
 
 void	monitoring(t_ph **ph)
 {
 	size_t	now;
-	int	i;
+	int		print;
+	int		i;
 	bool	b;
 
 	i = 0;
 	b = false;
-	while (i < (*ph)[i].set->nb_of_p)
+	print = -1;
+	while (i < (*ph)[0].set->nb_of_p)
 	{
 		now = get_current_time() - (*ph)[i].set->start;
 		pthread_mutex_lock(&(*ph)[i].m_meal);
-                if ((*ph)[i].n_meal >= (*ph)[0].set->nb_of_m)
-                        b = true;
-                pthread_mutex_unlock(&(*ph)[i].m_meal);
-		if (b == true && nb_of_meals(ph))
-		{
-			pthread_mutex_lock((*ph)[i].dining);
-                        (*ph)[i].set->died = true;
-                        pthread_mutex_unlock((*ph)[i].dining);
-			break ;
-		}
+        if ((*ph)[i].n_meal >= (*ph)[0].set->nb_of_m)
+            b = true;
+        pthread_mutex_unlock(&(*ph)[i].m_meal);
 		if (time_to_die(&(*ph)[i], now))
+			print = 1;
+		else if (b == true && nb_of_meals(ph))
+			print = 0;
+		if (print != -1)
 		{
 			pthread_mutex_lock((*ph)[i].dining);
-			(*ph)[i].set->died = true;
-			pthread_mutex_unlock((*ph)[i].dining);
-			printf("%zu  %d died\n", now, (*ph)[i].id);
+            (*ph)[i].set->died = true;
+            pthread_mutex_unlock((*ph)[i].dining);
+			if (print)
+				printf("%zu  %d died\n", now, (*ph)[i].id);
 			break ;
 		}
-		i = (i + 1) % (*ph)[i].set->nb_of_p;
+		i = (i + 1) % (*ph)[0].set->nb_of_p;
 	}
 	return ;
 }

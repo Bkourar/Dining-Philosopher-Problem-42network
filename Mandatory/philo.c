@@ -12,17 +12,23 @@
 
 #include "philo.h"
 
+// void f()
+// {
+//         system("leaks philo");
+// }
 
 int	main(int ac, char **av)
 {
 	t_ph	*phi;
 	int		i;
 
+	atexit(f);
 	phi = NULL;
 	if (ac != 5 && ac != 6)
 		return (write(2, "error inavalid argement\n", 25), 1);
 	parsing(ac, av, &phi);
 	i = phi->set->nb_of_p;
 	run_threads(&phi, i);
-	monitoring(&phi);
+	// monitoring(&phi);
+	return (0);
 }

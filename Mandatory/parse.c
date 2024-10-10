@@ -47,7 +47,7 @@ void	parsing(int	ac, char **av, t_ph **ph)
 			inf[i - 1] = check_argement(av[i], i);
 	}
 	if (ac == 5)
-		inf[4] = -1;
+		inf[4] = 0;
 	inf[5] = 0;
 	(*ph) = creat_data(inf, ph);
 }

@@ -1,23 +1,28 @@
-NAME :=  philo
+NAME := philo
 CC := gcc
 CFLAGS := -Wall -Werror -Wextra
-SRC := $(wildcard *.c)
-OBJ := $(SRC:%.c=%.o)
+OBJS_DIR := objs/
+SRCS := $(wildcard *.c)
+HDER := $(wildcard *.h)
+OBJ := $(addprefix $(OBJS_DIR), $(SRCS:.c=.o))
 
-all		: $(NAME)
+all	:	$(OBJS_DIR) $(NAME)
+
+$(OBJS_DIR)	:
+	mkdir -p $(OBJS_DIR)
+
+$(OBJS_DIR)%.o	:	%.c $(HDER)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME)	: $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -pthread -o $@
-
-%.o	: %.c %.h
-	$(CC) $(CFLAGC) -pthread -c $< -o $@
+	$(CC) $(CFLAGS) $(OBJ) -o $(NAME) -pthread
 
 fclean	: clean
 	rm -f $(NAME)
 
 clean	:
-	rm -f $(OBJ)
+	rm -r $(OBJS_DIR)
 
-re		: fclean all 
+re	:	fclean all
 
-.phone : clean
+.phone	:	clean

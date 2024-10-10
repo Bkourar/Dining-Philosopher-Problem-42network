@@ -19,9 +19,12 @@ int	eating(t_ph **ph)
 	tp = (*ph);
 	if (chopsticks(&tp, true))
 		return (1);
-	pthread_mutex_lock(&tp->m_meal);
-	tp->n_meal++;
-	pthread_mutex_unlock(&tp->m_meal);
+	if (tp->set->nb_of_m != 0)
+	{
+		pthread_mutex_lock(&tp->m_meal);
+		tp->n_meal++;
+		pthread_mutex_unlock(&tp->m_meal);
+	}
 	if (u_sleep(tp->set->tt_e))
 		perror("gettimeofday");
 	pthread_mutex_lock(&tp->ml_eat);

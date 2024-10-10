@@ -38,11 +38,11 @@ void	*routine(void *arg)
 	while (1)
 	{
         	if (eating(&ph))
-			break ;
+				break ;
         	if (sleeping(&ph))
-			break ;
+				break ;
         	if (thinking(&ph))
-			break ;
+				break ;
 	}
 	return (NULL);
 }
@@ -58,11 +58,14 @@ void	run_threads(t_ph **ph, int size)
 	while (++i < size)
 	{
 		if (pthread_create(&tmp[i].th, NULL, routine, &tmp[i]))
-			perror("THREAD create : 1");
+			perror("THREAD create");
 	}
 	monitoring(ph);
 	i = -1;
 	while (++i < size)
+	{
 		if (pthread_join(tmp[i].th, NULL) != 0)
-			perror("THREAD join : 2");
+			perror("THREAD join");
+	}
+	destroy_mutex(ph, size);
 }

@@ -60,7 +60,7 @@ t_ph	*creat_data(int *inf, t_ph **ph)
 		node[i].set = head;
 		node[i].writing = &node[i].set->wr;
 		node[i].dining = &node[i].set->md;
-		pthread_mutex_init(&node[i].ml_eat, NULL);
+		// pthread_mutex_init(&node[i].ml_eat, NULL);
 	}
 	return ((*ph) = node, (*ph));
 }

@@ -6,11 +6,40 @@
 /*   By: bikourar <bikourar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 18:46:18 by bikourar          #+#    #+#             */
-/*   Updated: 2024/08/22 01:05:37 by bikourar         ###   ########.fr       */
+/*   Updated: 2024/10/10 14:54:13 by bikourar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+// static int	check_d(t_ph **p)
+// {
+// 	pthread_mutex_lock((*p)->dining);
+// 	if ((*p)->set->died == true)
+// 	{
+// 		pthread_mutex_unlock((*p)->dining);
+// 		return (1);
+// 	}
+// 	pthread_mutex_unlock((*p)->dining);
+// 	return (0);
+// }
+
+
+static void	lock_unlock(t_ph *tp, bool b, int for_k)
+{
+	int	x;
+
+	x = for_k % 2;
+	if (b == true && x == 0)
+		pthread_mutex_lock(&tp->set->fork[tp->l_f]);
+	else if (b == true && x != 0)
+		pthread_mutex_lock(&tp->set->fork[tp->r_f]);
+	else if (b == false && x == 0)
+		pthread_mutex_unlock(&tp->set->fork[tp->l_f]);
+	else if (b == false && x != 0)
+		pthread_mutex_unlock(&tp->set->fork[tp->r_f]);
+}
+
 
 void	intial_metux(t_ph **ph, int size, size_t now)
 {
@@ -32,28 +61,25 @@ void	intial_metux(t_ph **ph, int size, size_t now)
 int	chopsticks(t_ph **ph, bool b)
 {
 	t_ph	*tp;
-	size_t  now;
+	size_t  n;
 
 	tp = (*ph);
 	pthread_mutex_lock(tp->writing);
-	now = get_current_time() - tp->set->start;
+	n = get_current_time() - tp->set->start;
 	pthread_mutex_unlock(tp->writing);
 	if (b == true)
 	{
-		pthread_mutex_lock(&tp->set->fork[tp->l_f]);
-		if (writing(&tp, "has take a fork", now))
+		lock_unlock(tp, true, tp->l_f);
+		if (writing(&tp, "has take a fork", n))
 			return (1);
-		pthread_mutex_lock(&tp->set->fork[tp->r_f]);
-		if (writing(&tp, "has take a fork", now))
-			return (1);
-		if (writing(&tp, "is eating", now))
+		if (tp->set->nb_of_p == 1)
+			return (lock_unlock(tp, false, tp->l_f), 1);
+		lock_unlock(tp, true, tp->r_f);
+		if (writing(&tp, "has take a fork", n) || writing(&tp, "is eating", n))
 			return (1);
 	}
 	else
-	{
-		pthread_mutex_unlock(&tp->set->fork[tp->l_f]);
-		pthread_mutex_unlock(&tp->set->fork[tp->r_f]);
-	}
+	(lock_unlock(tp, false, tp->l_f), lock_unlock(tp, false, tp->r_f));
 	return (0);
 }
 

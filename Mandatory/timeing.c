@@ -6,7 +6,7 @@
 /*   By: bikourar <bikourar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 19:15:00 by bikourar          #+#    #+#             */
-/*   Updated: 2024/08/22 00:58:34 by bikourar         ###   ########.fr       */
+/*   Updated: 2024/10/10 14:51:20 by bikourar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ size_t	time_to_die(t_ph *ph, size_t now)
 	pthread_mutex_lock(&tp->ml_eat);
 	check_time = now - tp->last_eat;
 	pthread_mutex_unlock(&tp->ml_eat);
-	// printf("[%zu]\n", check_time);
 	if (check_time >= (size_t)tp->set->tt_d)
 		return (1);
 	return (0);
@@ -55,7 +54,7 @@ static int	nb_of_meals(t_ph **ph)
 	int	i;
 	int	j;
 
-        j = 0;
+	j = 0;
 	i = -1;
 	tp = (*ph);
 	while (tp[0].set->nb_of_m && ++i < tp[0].set->nb_of_p)
@@ -84,9 +83,9 @@ void	monitoring(t_ph **ph)
 	{
 		now = get_current_time() - (*ph)[i].set->start;
 		pthread_mutex_lock(&(*ph)[i].m_meal);
-        if ((*ph)[i].n_meal >= (*ph)[0].set->nb_of_m)
-            b = true;
-        pthread_mutex_unlock(&(*ph)[i].m_meal);
+		if ((*ph)[i].n_meal >= (*ph)[0].set->nb_of_m)
+			b = true;
+		pthread_mutex_unlock(&(*ph)[i].m_meal);
 		if (time_to_die(&(*ph)[i], now))
 			print = 1;
 		else if (b == true && nb_of_meals(ph))
@@ -94,8 +93,8 @@ void	monitoring(t_ph **ph)
 		if (print != -1)
 		{
 			pthread_mutex_lock((*ph)[i].dining);
-            (*ph)[i].set->died = true;
-            pthread_mutex_unlock((*ph)[i].dining);
+			(*ph)[i].set->died = true;
+			pthread_mutex_unlock((*ph)[i].dining);
 			if (print)
 				printf("%zu  %d died\n", now, (*ph)[i].id);
 			break ;

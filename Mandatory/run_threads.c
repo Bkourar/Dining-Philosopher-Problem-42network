@@ -6,7 +6,7 @@
 /*   By: bikourar <bikourar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 18:42:49 by bikourar          #+#    #+#             */
-/*   Updated: 2024/08/22 00:56:03 by bikourar         ###   ########.fr       */
+/*   Updated: 2024/10/10 14:44:12 by bikourar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,14 @@ void	*routine(void *arg)
 		u_sleep(ph->set->tt_e);
 	while (1)
 	{
-        	if (eating(&ph))
-				break ;
-        	if (sleeping(&ph))
-				break ;
-        	if (thinking(&ph))
-				break ;
+		if (ph->set->died == true)
+			break ;
+		if (eating(&ph))
+			break ;
+		if (sleeping(&ph))
+			break ;
+		if (thinking(&ph))
+			break ;
 	}
 	return (NULL);
 }

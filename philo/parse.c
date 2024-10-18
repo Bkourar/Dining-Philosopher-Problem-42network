@@ -6,7 +6,7 @@
 /*   By: bikourar <bikourar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 06:56:19 by bikourar          #+#    #+#             */
-/*   Updated: 2024/10/17 20:32:09 by bikourar         ###   ########.fr       */
+/*   Updated: 2024/10/18 12:29:17 by bikourar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ static int	check_argement(const char *str, int ac)
 		return (0);
 	number = ft_atoi(&str[i]);
 	if (number <= 0 || (ac == 1 && number > 200))
-		return (0);
+		return (-1);
 	else if ((ac == 2 || ac == 3 || ac == 4) && number < 60)
-		return (0);
+		return (-1);
 	return (number);
 }
 
@@ -41,13 +41,8 @@ t_ph	*parsing(int ac, char **av)
 	i = 0;
 	while (++i < ac)
 	{
-		if (!check_argement(av[i], i))
-		{
-			if (i != 5)
-				return (write(2, "rules not confirmed\n", 21), NULL);
-			else if (i == 5 && ft_atoi(av[i]) < 0)
-				return (write(2, "rules not confirmed\n", 21), NULL);
-		}
+		if (check_argement(av[i], i) == -1)
+			return (write(2, "rules not confirmed\n", 21), NULL);
 		else
 			inf[i - 1] = check_argement(av[i], i);
 	}

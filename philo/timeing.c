@@ -6,7 +6,7 @@
 /*   By: bikourar <bikourar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 19:15:00 by bikourar          #+#    #+#             */
-/*   Updated: 2024/10/17 23:56:23 by bikourar         ###   ########.fr       */
+/*   Updated: 2024/10/18 12:25:18 by bikourar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int	u_sleep(size_t time_u_want, t_ph *ph, int j)
 {
 	size_t	start;
 
-	j =0;
 	start = get_current_time();
 	while (get_current_time() - start < time_u_want)
 	{
@@ -69,20 +68,17 @@ static int	nb_of_meals(t_ph **ph)
 	return (0);
 }
 
-static int	loop_moni(t_ph *ph, int i, BOOL b, BOOL checkmat)
+static int	loop_moni(t_ph *ph, int i, BOOL b, size_t n)
 {
-	size_t	now;
-
-	(void)checkmat;
 	while (i < ph[0].set->nb_of_p)
 	{
-		now = get_current_time() - ph[0].set->start;
-		if (time_to_die(&ph[i], now))
+		n = get_current_time() - ph[0].set->start;
+		if (time_to_die(&ph[i], n))
 		{
-			di_ed(&ph[i].set->died, ph[i].set->m_d);
-			key_mtx(&ph[i].set->wr, 1);
-			printf("%zu  %d died\n", now, ph[i].id);
-			key_mtx(&ph[i].set->wr, 0);
+			key_mtx(&ph[i].set->m_d, 1);
+			ph[i].set->died = TRUE;
+			(key_mtx(&ph[i].set->m_d, 0), key_mtx(&ph[i].set->wr, 1));
+			(printf("%zu  %d died\n", n, ph[i].id), key_mtx(&ph[i].set->wr, 0));
 			break ;
 		}
 		key_mtx(&ph[i].m_meal, 1);
@@ -90,7 +86,11 @@ static int	loop_moni(t_ph *ph, int i, BOOL b, BOOL checkmat)
 			b = TRUE;
 		key_mtx(&ph[i].m_meal, 0);
 		if (b == TRUE && nb_of_meals(&ph))
-			return (di_ed(&ph[i].set->died, ph[i].set->m_d), 0);
+		{
+			key_mtx(&ph[i].set->m_d, 1);
+			ph[i].set->died = TRUE;
+			return (key_mtx(&ph[i].set->m_d, 0), 0);
+		}
 		i = (i + 1) % ph[0].set->nb_of_p;
 	}
 	return (0);
@@ -100,11 +100,11 @@ int	monitoring(t_ph **ph)
 {
 	int		i;
 	BOOL	b;
-	BOOL	checkmat;
+	size_t	now;
 
 	i = 0;
 	b = FALSE;
-	checkmat = FALSE;
-	loop_moni(*ph, i, b, checkmat);
+	now = 0;
+	loop_moni(*ph, i, b, now);
 	return (0);
 }

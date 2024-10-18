@@ -6,7 +6,7 @@
 /*   By: bikourar <bikourar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 19:22:55 by bikourar          #+#    #+#             */
-/*   Updated: 2024/10/17 23:50:38 by bikourar         ###   ########.fr       */
+/*   Updated: 2024/10/18 11:29:48 by bikourar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,14 @@ int	eating(t_ph *tp)
 	if (printing(&tp, "is eating"))
 		return (key_mtx(&tp->set->fork[tp->l_f], 0)
 			, key_mtx(&tp->set->fork[tp->r_f], 0), 1);
-	if (tp->set->nb_of_m != 0)
+	if (tp->set->nb_of_m > 0)
 		(key_mtx(&tp->m_meal, 1), plu(&tp->n_meal, 1), key_mtx(&tp->m_meal, 0));
-	if (u_sleep(tp->set->tt_e, tp, 1))
-		return (key_mtx(&tp->set->fork[tp->l_f], 0)
-			, key_mtx(&tp->set->fork[tp->r_f], 0), 1);
 	key_mtx(&tp->ml_eat, 1);
 	tp->last_eat = get_current_time() - tp->set->start;
 	key_mtx(&tp->ml_eat, 0);
+	if (u_sleep(tp->set->tt_e, tp, 1))
+		return (key_mtx(&tp->set->fork[tp->l_f], 0)
+			, key_mtx(&tp->set->fork[tp->r_f], 0), 1);
 	(key_mtx(&tp->set->fork[tp->l_f], 0), key_mtx(&tp->set->fork[tp->r_f], 0));
 	return (0);
 }

@@ -2,7 +2,8 @@ NAME := philo_bonus
 CC := gcc
 CFLAGS := -Wall -Werror -Wextra
 OBJS_DIR := objs_bo/
-SRCS := parse.c philo_bonus.c utilse_philo.c list_tools.c  creat_data.c
+SRCS := philo_bon.c parse.c utilse_philo.c run_process.c \
+		creat_data.c day.c monitor.c
 HDER := philo_bonus.h
 OBJ := $(addprefix $(OBJS_DIR), $(SRCS:.c=.o))
 

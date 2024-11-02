@@ -1,5 +1,16 @@
 #include "philo_bonus.h"
 
+void	u_sleep(size_t time_u_want)
+{
+	size_t	start;
+
+	start = now_time();
+	while (now_time() - start < time_u_want)
+	{
+		usleep(500);
+	}
+}
+
 size_t	now_time(void)
 {
 	t_ms	time;
@@ -19,7 +30,7 @@ static int	check_argement(const char *str, int ac)
 	if (str[i] != '\0' && str[i] == '+')
 		i++;
 	else if (str[i] != '\0' && str[i] == '-')
-		return (0);
+		return (-1);
 	number = ft_atoi(&str[i]);
 	if (number <= 0 || (ac == 1 && number > 200))
 		return (-1);
@@ -28,25 +39,26 @@ static int	check_argement(const char *str, int ac)
 	return (number);
 }
 
-t_set	*parsing(int ac, char **av)
+int	parsing(int ac, char **av, t_set **data)
 {
-	int		inf[sizeof(int) * 5];
+	int		inf[sizeof(int) * ac];
+	int		checker;
 	int		i;
-	t_set	*data;
 
 	i = 0;
 	while (++i < ac)
 	{
-		if (check_argement(av[i], i) == -1)
-			return (write(2, "rules not confirmed\n", 21), NULL);
+		checker = check_argement(av[i], i);
+		if (checker == -1)
+			return (write(2, "rules not confirmed\n", 21), -1);
+		else if(checker == 0)
+			return (1);
 		else
-			inf[i - 1] = check_argement(av[i], i);
+			inf[i - 1] = checker;
 	}
-	if (ac == 5)
-		inf[4] = 0;
-	inf[5] = 0;
-	data = create_data(inf);
+	inf[ac - 1] = 0;
+	(*data) = create_data(inf);
 	if (data == NULL)
-		return (NULL);
-	return (data);
+		return (-1);
+	return (0);
 }

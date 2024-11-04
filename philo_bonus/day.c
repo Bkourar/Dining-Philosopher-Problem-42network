@@ -22,9 +22,12 @@ static void	eating(t_ph *ph)
 		ph->nmeal--;
 	keys(ph->key, 0);
 	keys(ph->key, 1);
-	ph->leat = now_time() - ph->set->start;
+	if (ph->set->nb_of_m > 0 && ph->nmeal != 0)
+	{
+		ph->leat = now_time() - ph->set->start;
+		u_sleep(ph->set->tt_e);
+	}
 	keys(ph->key, 0);
-	u_sleep(ph->set->tt_e);
 	keys(ph->set->fork, 0);
 	keys(ph->set->fork, 0);
 }

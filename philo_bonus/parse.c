@@ -30,12 +30,12 @@ static int	check_argement(const char *str, int ac)
 	if (str[i] != '\0' && str[i] == '+')
 		i++;
 	else if (str[i] != '\0' && str[i] == '-')
-		return (-1);
+		return (0);
 	number = ft_atoi(&str[i]);
 	if (number <= 0 || (ac == 1 && number > 200))
-		return (-1);
+		return (0);
 	else if ((ac == 2 || ac == 3 || ac == 4) && number < 60)
-		return (-1);
+		return (0);
 	return (number);
 }
 
@@ -49,16 +49,14 @@ int	parsing(int ac, char **av, t_set **data)
 	while (++i < ac)
 	{
 		checker = check_argement(av[i], i);
-		if (checker == -1)
-			return (write(2, "rules not confirmed\n", 21), -1);
-		else if(checker == 0)
-			return (1);
+		if (checker == 0)
+			return (write(2, "rules not confirmed\n", 21), 1);
 		else
 			inf[i - 1] = checker;
 	}
 	inf[ac - 1] = 0;
 	(*data) = create_data(inf);
 	if (data == NULL)
-		return (-1);
+		return (1);
 	return (0);
 }

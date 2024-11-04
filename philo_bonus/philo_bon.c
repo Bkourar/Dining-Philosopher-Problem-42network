@@ -10,11 +10,8 @@ int	main(int ac, char **av)
 	setting = NULL;
 	if (ac != 5 && ac != 6)
 		return (write(2, "error inavalid argement\n", 25), 1);
-	i = parsing(ac, av, &setting);
-	if (i == -1)
+	if (parsing(ac, av, &setting))
 		return (1);
-	else if (i == 1)
-		return (0);
 	philo = loding_philo(setting);
 	run_process(philo, setting->nb_of_p);
 	i = -1;

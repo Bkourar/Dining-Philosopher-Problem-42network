@@ -11,15 +11,21 @@ t_set	*create_data(int *in)
 	s->tt_d = in[1];
 	s->tt_e = in[2];
 	s->tt_s = in[3];
-	s->nb_of_m = in[5];
-	s->died = FALSE;
+	if (in[4] > 0)
+		s->nb_of_m = in[4];
+	else
+		s->nb_of_m = 0;
+		
+	// printf("%d\n", s->nb_of_m);
+	// exit(1);
+	// s->im_eat = FALSE;
 	sem_unlink("/sem_fork");
-	sem_unlink("/sem_keys");
+	sem_unlink("/sem_eating");
 	sem_unlink("/sem_printing");
 	s->fork = sem_open("/sem_fork", O_CREAT, 0644, in[0]);
-	s->key = sem_open("/sem_keys", O_CREAT, 0644, 1);
+	// s->dining = sem_open("/sem_eating", O_CREAT, 0644, 1);
 	s->wrt = sem_open("/sem_printing", O_CREAT, 0644, 1);
-	return (free(in), s);
+	return (s);
 }
 
 static t_ph	*update_input(int id, t_set *setin, t_ph *hd)
@@ -33,7 +39,7 @@ static t_ph	*update_input(int id, t_set *setin, t_ph *hd)
 		return (write(2, "failed allocation\n", 19), NULL);
 	}
 	new->id = id;
-	new->nmeal = 0;
+	new->nmeal = setin->nb_of_m;
 	new->leat = 0;
 	new->set = setin;
 	new->next = NULL;
@@ -52,11 +58,11 @@ t_ph	*loding_philo(t_set *inf)
 	c_ph = update_input(1, inf, c_ph);
 	if (c_ph == NULL)
 		exit(1);
-	i = 1;
+	i = 0;
 	o_ph = c_ph;
 	while (i < inf->nb_of_p)
 	{
-		n_ph = update_input(i + 1, inf, c_ph);
+		n_ph = update_input(i + 2, inf, c_ph);
 		if (n_ph == NULL)
 			exit(1);
 		o_ph->next = n_ph;

@@ -18,6 +18,7 @@
 # define FALSE 0
 
 typedef struct timeval	t_ms;
+
 typedef struct setting
 {
 	int		nb_of_p;
@@ -25,10 +26,10 @@ typedef struct setting
 	int		tt_e;
 	int		tt_s;
 	int		nb_of_m;
-	BOOL	died;
+	// BOOL	im_eat;
 	size_t	start;
 	sem_t	*fork;
-	sem_t	*key;
+	// sem_t	*dining;
 	sem_t	*wrt;
 }			t_set;
 
@@ -37,6 +38,7 @@ typedef struct philo
 	pthread_t		th;
 	pid_t			p_d;
 	t_set			*set;
+	sem_t			*key;
 	size_t			leat;
 	int				id;
 	int				nmeal;
@@ -51,12 +53,14 @@ int		parsing(int ac, char **av, t_set **data);
 t_ph	*loding_philo(t_set *inf);
 size_t	now_time(void);
 void	free_ph(t_ph *ph, t_set *setting, int size);
-void    run_process(t_ph *ph, int size);
+void	run_process(t_ph *ph, int size);
 void	ft_exit(t_ph *ph);
 void	*routine(void *arg);
 void	u_sleep(size_t time_u_want);
 void 	add(int *ptr, int val);
-void    keys(sem_t *sem, int lock);
-void	monitoring(t_ph *pr, size_t	now);
+void	keys(sem_t *sem, int lock);
+void	monitor(t_ph *pr);
 void	writing(char *out, t_ph *pr);
+void	nb_of_meals(t_ph *pr);
+void	time_to_die(t_ph *pr, size_t now);
 #endif

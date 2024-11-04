@@ -6,7 +6,7 @@
 /*   By: bikourar <bikourar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 06:56:19 by bikourar          #+#    #+#             */
-/*   Updated: 2024/10/18 12:29:17 by bikourar         ###   ########.fr       */
+/*   Updated: 2024/11/04 21:56:33 by bikourar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ static int	check_argement(const char *str, int ac)
 		return (0);
 	number = ft_atoi(&str[i]);
 	if (number <= 0 || (ac == 1 && number > 200))
-		return (-1);
+		return (0);
 	else if ((ac == 2 || ac == 3 || ac == 4) && number < 60)
-		return (-1);
+		return (0);
 	return (number);
 }
 

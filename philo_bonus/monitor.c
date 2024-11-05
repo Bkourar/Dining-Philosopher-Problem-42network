@@ -6,7 +6,7 @@
 /*   By: bikourar <bikourar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 12:08:23 by bikourar          #+#    #+#             */
-/*   Updated: 2024/11/05 12:08:24 by bikourar         ###   ########.fr       */
+/*   Updated: 2024/11/05 14:34:33 by bikourar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ void	time_to_die(t_ph *pr, size_t now)
 
 	keys(pr->key, 1);
 	check_time = now - pr->leat;
-	if (check_time >= (size_t)pr->set->tt_d && pr->nmeal != 0)
+	if (check_time >= (size_t)pr->set->tt_d)
 	{
-		writing("died\n", pr);
+		writing("died", pr);
 		kill(STDIN_FILENO, SIGINT);
 	}
 	keys(pr->key, 0);

@@ -6,7 +6,7 @@
 /*   By: bikourar <bikourar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 06:57:39 by bikourar          #+#    #+#             */
-/*   Updated: 2024/11/05 12:20:23 by bikourar         ###   ########.fr       */
+/*   Updated: 2024/11/05 13:57:57 by bikourar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ size_t	time_to_die(t_ph *ph, size_t now);
 size_t	ft_strlen(const char *s);
 size_t	get_current_time(void);
 int		printing(t_ph **ph, char *str);
-int		u_sleep(size_t time_u_want, t_ph *ph, int j);
+int		u_sleep(size_t time_u_want, t_ph *ph);
 int		ft_atoi(const char *str);
 int		monitoring(t_ph **ph);
 int		white_space(char c);

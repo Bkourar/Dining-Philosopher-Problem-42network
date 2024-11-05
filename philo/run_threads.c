@@ -6,7 +6,7 @@
 /*   By: bikourar <bikourar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 18:42:49 by bikourar          #+#    #+#             */
-/*   Updated: 2024/11/05 12:20:31 by bikourar         ###   ########.fr       */
+/*   Updated: 2024/11/05 13:58:07 by bikourar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	*routine(void *arg)
 
 	ph = (t_ph *)arg;
 	if (ph->id % 2 == 0)
-		u_sleep(ph->set->tt_e, ph, 0);
+		u_sleep(ph->set->tt_e, ph);
 	while (1)
 	{
 		if (eating(ph))

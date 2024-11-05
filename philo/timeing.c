@@ -6,13 +6,13 @@
 /*   By: bikourar <bikourar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 19:15:00 by bikourar          #+#    #+#             */
-/*   Updated: 2024/10/18 12:25:18 by bikourar         ###   ########.fr       */
+/*   Updated: 2024/11/05 13:57:42 by bikourar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	u_sleep(size_t time_u_want, t_ph *ph, int j)
+int	u_sleep(size_t time_u_want, t_ph *ph)
 {
 	size_t	start;
 
@@ -20,13 +20,10 @@ int	u_sleep(size_t time_u_want, t_ph *ph, int j)
 	while (get_current_time() - start < time_u_want)
 	{
 		usleep(500);
-		if (j == 0)
-		{
-			key_mtx(&ph->set->m_d, 1);
-			if (ph->set->died == TRUE)
-				return (key_mtx(&ph->set->m_d, 0), 1);
-			key_mtx(&ph->set->m_d, 0);
-		}
+		key_mtx(&ph->set->m_d, 1);
+		if (ph->set->died == TRUE)
+			return (key_mtx(&ph->set->m_d, 0), 1);
+		key_mtx(&ph->set->m_d, 0);
 	}
 	return (0);
 }

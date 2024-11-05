@@ -6,7 +6,7 @@
 /*   By: bikourar <bikourar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 12:08:05 by bikourar          #+#    #+#             */
-/*   Updated: 2024/11/05 12:08:06 by bikourar         ###   ########.fr       */
+/*   Updated: 2024/11/05 14:35:10 by bikourar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ static void	eating(t_ph *ph)
 {
 	keys(ph->set->fork, 1);
 	writing("has taken a fork", ph);
-	if (ph->set->nb_of_p == 1)
-		(exit(1));
 	keys(ph->set->fork, 1);
 	writing("has taken a fork", ph);
 	writing("is eating", ph);

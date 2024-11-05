@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   run_process.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bikourar <bikourar@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/05 12:10:40 by bikourar          #+#    #+#             */
+/*   Updated: 2024/11/05 12:11:06 by bikourar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo_bonus.h"
 
-void add(int *ptr, int val)
+void	add(int *ptr, int val)
 {
 	*ptr = *ptr + val;
 }
@@ -11,7 +23,7 @@ void	free_ph(t_ph *ph, t_set *setting, int size)
 	int		i;
 
 	i = 1;
-	while(i < size)
+	while (i < size)
 	{
 		tp = ph;
 		ph = ph->next;

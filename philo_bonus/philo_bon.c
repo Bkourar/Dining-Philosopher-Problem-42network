@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo_bon.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bikourar <bikourar@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/05 12:11:16 by bikourar          #+#    #+#             */
+/*   Updated: 2024/11/05 12:11:17 by bikourar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo_bonus.h"
 
 int	main(int ac, char **av)
@@ -18,7 +30,7 @@ int	main(int ac, char **av)
 	while (philo && ++i < setting->nb_of_p)
 	{
 		waitpid(philo->p_d, NULL, 0);
-		philo  = philo->next;
+		philo = philo->next;
 	}
 	free_ph(philo, setting, setting->nb_of_p);
 }

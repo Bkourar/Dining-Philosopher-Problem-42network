@@ -6,7 +6,7 @@
 /*   By: bikourar <bikourar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 06:56:19 by bikourar          #+#    #+#             */
-/*   Updated: 2024/11/04 21:56:33 by bikourar         ###   ########.fr       */
+/*   Updated: 2024/11/05 12:21:01 by bikourar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,25 +32,27 @@ static int	check_argement(const char *str, int ac)
 	return (number);
 }
 
-t_ph	*parsing(int ac, char **av)
+int	parsing(int ac, char **av, t_ph **ph)
 {
-	int		inf[sizeof(int) * 5];
-	int		i;
-	t_ph	*ph;
+	int	*inf;
+	int	checker;
+	int	i;
 
 	i = 0;
+	inf = malloc(sizeof(int) * ac);
+	if (!inf)
+		return (write(2, "faile allocation\n", 18), 1);
 	while (++i < ac)
 	{
-		if (check_argement(av[i], i) == -1)
-			return (write(2, "rules not confirmed\n", 21), NULL);
+		checker = check_argement(av[i], i);
+		if (checker == 0)
+			return (write(2, "rules not confirmed\n", 21), 1);
 		else
-			inf[i - 1] = check_argement(av[i], i);
+			inf[i - 1] = checker;
 	}
-	if (ac == 5)
-		inf[4] = 0;
-	inf[5] = 0;
-	ph = create_data(inf);
-	if (ph == NULL)
-		return (NULL);
-	return (ph);
+	inf[ac - 1] = 0;
+	(*ph) = create_data(inf);
+	if ((*ph) == NULL)
+		return (1);
+	return (0);
 }

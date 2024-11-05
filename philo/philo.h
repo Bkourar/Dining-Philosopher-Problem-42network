@@ -6,7 +6,7 @@
 /*   By: bikourar <bikourar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 06:57:39 by bikourar          #+#    #+#             */
-/*   Updated: 2024/10/18 10:28:07 by bikourar         ###   ########.fr       */
+/*   Updated: 2024/11/05 12:20:23 by bikourar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ typedef struct philo
 	size_t		last_eat;
 }				t_ph;
 
-t_ph	*parsing(int ac, char **av);
+int		parsing(int ac, char **av, t_ph **ph);
 t_ph	*create_data(int *data);
 int		run_threads(t_ph *ph, int size);
 size_t	time_to_die(t_ph *ph, size_t now);

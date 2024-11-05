@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   creat_data.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bikourar <bikourar@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/05 12:06:50 by bikourar          #+#    #+#             */
+/*   Updated: 2024/11/05 12:13:44 by bikourar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo_bonus.h"
 
 t_set	*create_data(int *in)
@@ -15,17 +27,12 @@ t_set	*create_data(int *in)
 		s->nb_of_m = in[4];
 	else
 		s->nb_of_m = 0;
-		
-	// printf("%d\n", s->nb_of_m);
-	// exit(1);
-	// s->im_eat = FALSE;
 	sem_unlink("/sem_fork");
 	sem_unlink("/sem_eating");
 	sem_unlink("/sem_printing");
 	s->fork = sem_open("/sem_fork", O_CREAT, 0644, in[0]);
-	// s->dining = sem_open("/sem_eating", O_CREAT, 0644, 1);
 	s->wrt = sem_open("/sem_printing", O_CREAT, 0644, 1);
-	return (s);
+	return (free(in), s);
 }
 
 static t_ph	*update_input(int id, t_set *setin, t_ph *hd)
@@ -58,11 +65,11 @@ t_ph	*loding_philo(t_set *inf)
 	c_ph = update_input(1, inf, c_ph);
 	if (c_ph == NULL)
 		exit(1);
-	i = 0;
+	i = 1;
 	o_ph = c_ph;
 	while (i < inf->nb_of_p)
 	{
-		n_ph = update_input(i + 2, inf, c_ph);
+		n_ph = update_input(i + 1, inf, c_ph);
 		if (n_ph == NULL)
 			exit(1);
 		o_ph->next = n_ph;

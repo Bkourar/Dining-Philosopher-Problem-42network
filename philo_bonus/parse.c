@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bikourar <bikourar@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/05 12:10:02 by bikourar          #+#    #+#             */
+/*   Updated: 2024/11/05 12:13:23 by bikourar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo_bonus.h"
 
 void	u_sleep(size_t time_u_want)
@@ -41,11 +53,14 @@ static int	check_argement(const char *str, int ac)
 
 int	parsing(int ac, char **av, t_set **data)
 {
-	int		inf[sizeof(int) * ac];
-	int		checker;
-	int		i;
+	int	*inf;
+	int	checker;
+	int	i;
 
 	i = 0;
+	inf = malloc(sizeof(int) * ac);
+	if (!inf)
+		return (write(2, "faile allocation\n", 18), 1);
 	while (++i < ac)
 	{
 		checker = check_argement(av[i], i);

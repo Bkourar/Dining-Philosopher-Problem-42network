@@ -1,11 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   day.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bikourar <bikourar@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/05 12:08:05 by bikourar          #+#    #+#             */
+/*   Updated: 2024/11/05 12:08:06 by bikourar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo_bonus.h"
 
-void    keys(sem_t *sem, int lock)
+void	keys(sem_t *sem, int lock)
 {
-    if (lock == 1)
-        sem_wait(sem);
-    else if (lock == 0)
-        sem_post(sem);
+	if (lock == 1)
+		sem_wait(sem);
+	else if (lock == 0)
+		sem_post(sem);
 }
 
 static void	eating(t_ph *ph)
@@ -20,8 +32,7 @@ static void	eating(t_ph *ph)
 	keys(ph->key, 1);
 	if (ph->set->nb_of_m > 0 && ph->nmeal != 0)
 		ph->nmeal--;
-	keys(ph->key, 0);
-	keys(ph->key, 1);
+	(keys(ph->key, 0), keys(ph->key, 1));
 	if (ph->set->nb_of_m > 0 && ph->nmeal != 0)
 	{
 		ph->leat = now_time() - ph->set->start;
@@ -32,13 +43,13 @@ static void	eating(t_ph *ph)
 	keys(ph->set->fork, 0);
 }
 
-static void sleeping(t_ph *ph)
+static void	sleeping(t_ph *ph)
 {
 	writing("is sleeping", ph);
 	u_sleep(ph->set->tt_s);
 }
 
-static void thinking(t_ph *ph)
+static void	thinking(t_ph *ph)
 {
 	writing("is thinking", ph);
 }
@@ -53,11 +64,6 @@ void	*routine(void *arg)
 	while (1)
 	{
 		eating(ph);
-		// if (ph->set->nb_of_m > 0 && ph->nmeal >= ph->set->nb_of_m)
-		// {
-		// 	keys(ph->key, 0);
-		// 	break ;
-		// }
 		sleeping(ph);
 		thinking(ph);
 		keys(ph->key, 1);

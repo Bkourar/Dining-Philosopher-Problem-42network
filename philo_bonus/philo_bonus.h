@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo_bonus.h                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bikourar <bikourar@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/05 12:10:24 by bikourar          #+#    #+#             */
+/*   Updated: 2024/11/05 12:10:25 by bikourar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PHILO_BONUS_H
 # define PHILO_BONUS_H
 
@@ -26,10 +38,8 @@ typedef struct setting
 	int		tt_e;
 	int		tt_s;
 	int		nb_of_m;
-	// BOOL	im_eat;
 	size_t	start;
 	sem_t	*fork;
-	// sem_t	*dining;
 	sem_t	*wrt;
 }			t_set;
 
@@ -57,9 +67,8 @@ void	run_process(t_ph *ph, int size);
 void	ft_exit(t_ph *ph);
 void	*routine(void *arg);
 void	u_sleep(size_t time_u_want);
-void 	add(int *ptr, int val);
+void	add(int *ptr, int val);
 void	keys(sem_t *sem, int lock);
-void	monitor(t_ph *pr);
 void	writing(char *out, t_ph *pr);
 void	nb_of_meals(t_ph *pr);
 void	time_to_die(t_ph *pr, size_t now);

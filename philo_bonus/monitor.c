@@ -6,7 +6,7 @@
 /*   By: bikourar <bikourar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 12:08:23 by bikourar          #+#    #+#             */
-/*   Updated: 2024/11/07 13:17:55 by bikourar         ###   ########.fr       */
+/*   Updated: 2024/11/07 14:25:53 by bikourar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,5 @@ void	add(int *ptr, int val)
 void	ft_exit(t_ph *ph)
 {
 	free_ph(ph, ph->set, ph->set->nb_of_p);
-	kill(STDIN_FILENO, SIGINT);
+	keys(ph->set->died, 1);
 }

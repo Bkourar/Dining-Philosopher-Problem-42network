@@ -6,7 +6,7 @@
 /*   By: bikourar <bikourar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 12:11:16 by bikourar          #+#    #+#             */
-/*   Updated: 2024/11/07 13:18:12 by bikourar         ###   ########.fr       */
+/*   Updated: 2024/11/07 14:36:45 by bikourar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	main(int ac, char **av)
 {
 	t_set		*setting;
 	t_ph		*philo;
-	pthread_t	th;
+	pthread_t	th = NULL;
 
 	philo = NULL;
 	setting = NULL;

@@ -6,7 +6,7 @@
 /*   By: bikourar <bikourar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 12:10:40 by bikourar          #+#    #+#             */
-/*   Updated: 2024/11/07 13:18:41 by bikourar         ###   ########.fr       */
+/*   Updated: 2024/11/07 14:24:23 by bikourar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,10 @@ void	free_ph(t_ph *ph, t_set *setting, int size)
 	int		i;
 
 	i = 1;
+	sem_close(ph->key);
+	sem_close(ph->set->died);
+	sem_close(ph->set->fork);
+	sem_close(ph->set->wrt);
 	while (i < size)
 	{
 		tp = ph;

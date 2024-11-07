@@ -1,6 +1,6 @@
 NAME := philo
 CC := gcc
-CFLAGS := -Wall -Werror -Wextra
+CFLAGS := -Wall -Werror -Wextra -g -fsanitize=thread
 OBJS_DIR := objs/
 SRCS := data.c days.c parse.c philo.c run_threads.c setting.c timeing.c \
 		utilse_philo.c

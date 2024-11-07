@@ -6,7 +6,7 @@
 /*   By: bikourar <bikourar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 12:10:02 by bikourar          #+#    #+#             */
-/*   Updated: 2024/11/05 12:13:23 by bikourar         ###   ########.fr       */
+/*   Updated: 2024/11/06 15:24:41 by bikourar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,18 +60,18 @@ int	parsing(int ac, char **av, t_set **data)
 	i = 0;
 	inf = malloc(sizeof(int) * ac);
 	if (!inf)
-		return (write(2, "faile allocation\n", 18), 1);
+		return (write(2, "faile allocation\n", 18), free(inf), 1);
 	while (++i < ac)
 	{
 		checker = check_argement(av[i], i);
 		if (checker == 0)
-			return (write(2, "rules not confirmed\n", 21), 1);
+			return (write(2, "rules not confirmed\n", 21), free(inf), 1);
 		else
 			inf[i - 1] = checker;
 	}
 	inf[ac - 1] = 0;
 	(*data) = create_data(inf);
 	if (data == NULL)
-		return (1);
+		return (free(inf), 1);
 	return (0);
 }

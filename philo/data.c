@@ -6,7 +6,7 @@
 /*   By: bikourar <bikourar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 06:58:11 by bikourar          #+#    #+#             */
-/*   Updated: 2024/10/17 20:41:44 by bikourar         ###   ########.fr       */
+/*   Updated: 2024/11/05 15:17:32 by bikourar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,5 +66,5 @@ t_ph	*create_data(int *inf)
 		if (pthread_mutex_init(&node[i].m_meal, NULL))
 			return (NULL);
 	}
-	return (node);
+	return (free(inf), node);
 }

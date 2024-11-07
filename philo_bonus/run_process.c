@@ -6,16 +6,11 @@
 /*   By: bikourar <bikourar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 12:10:40 by bikourar          #+#    #+#             */
-/*   Updated: 2024/11/05 14:33:53 by bikourar         ###   ########.fr       */
+/*   Updated: 2024/11/07 13:18:41 by bikourar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
-
-void	add(int *ptr, int val)
-{
-	*ptr = *ptr + val;
-}
 
 void	free_ph(t_ph *ph, t_set *setting, int size)
 {
@@ -33,12 +28,6 @@ void	free_ph(t_ph *ph, t_set *setting, int size)
 	free(setting);
 }
 
-void	ft_exit(t_ph *ph)
-{
-	free_ph(ph, ph->set, ph->set->nb_of_p);
-	kill(STDIN_FILENO, SIGINT);
-}
-
 void	writing(char *out, t_ph *pr)
 {
 	size_t	now;
@@ -51,11 +40,8 @@ void	writing(char *out, t_ph *pr)
 	keys(pr->set->wrt, 0);
 }
 
-void	run_process(t_ph *ph, int size)
+void	run_process(t_ph *ph, int size, int i)
 {
-	int	i;
-
-	i = -1;
 	ph->set->start = now_time();
 	while (ph && ++i < size)
 	{

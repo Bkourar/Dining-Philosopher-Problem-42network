@@ -6,7 +6,7 @@
 /*   By: bikourar <bikourar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 12:08:05 by bikourar          #+#    #+#             */
-/*   Updated: 2024/11/05 14:35:10 by bikourar         ###   ########.fr       */
+/*   Updated: 2024/11/06 22:17:31 by bikourar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,9 @@ static void	eating(t_ph *ph)
 	writing("has taken a fork", ph);
 	writing("is eating", ph);
 	keys(ph->key, 1);
-	if (ph->set->nb_of_m > 0 && ph->nmeal != 0)
-		ph->nmeal--;
-	(keys(ph->key, 0), keys(ph->key, 1));
-	if (ph->set->nb_of_m > 0 && ph->nmeal != 0)
-	{
-		ph->leat = now_time() - ph->set->start;
-		u_sleep(ph->set->tt_e);
-	}
+	ph->leat = now_time() - ph->set->start;
 	keys(ph->key, 0);
+	u_sleep(ph->set->tt_e);
 	keys(ph->set->fork, 0);
 	keys(ph->set->fork, 0);
 }
@@ -65,6 +59,8 @@ void	*routine(void *arg)
 		sleeping(ph);
 		thinking(ph);
 		keys(ph->key, 1);
+		if (ph->set->nb_of_m > 0 && ph->nmeal != 0)
+			ph->nmeal--;
 		if (ph->set->nb_of_m > 0 && ph->nmeal == 0)
 		{
 			keys(ph->key, 0);

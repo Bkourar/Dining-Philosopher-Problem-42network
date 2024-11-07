@@ -6,7 +6,7 @@
 /*   By: bikourar <bikourar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 12:06:50 by bikourar          #+#    #+#             */
-/*   Updated: 2024/11/05 12:13:44 by bikourar         ###   ########.fr       */
+/*   Updated: 2024/11/06 21:53:04 by bikourar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,12 @@ t_set	*create_data(int *in)
 	else
 		s->nb_of_m = 0;
 	sem_unlink("/sem_fork");
+	sem_unlink("/sem_died");
 	sem_unlink("/sem_eating");
 	sem_unlink("/sem_printing");
 	s->fork = sem_open("/sem_fork", O_CREAT, 0644, in[0]);
 	s->wrt = sem_open("/sem_printing", O_CREAT, 0644, 1);
+	s->died = sem_open("/sem_died", O_CREAT, 0644, 0);
 	return (free(in), s);
 }
 

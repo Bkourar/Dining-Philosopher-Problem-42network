@@ -6,7 +6,7 @@
 /*   By: bikourar <bikourar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 12:10:24 by bikourar          #+#    #+#             */
-/*   Updated: 2024/11/05 12:10:25 by bikourar         ###   ########.fr       */
+/*   Updated: 2024/11/07 13:17:35 by bikourar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct setting
 	int		nb_of_m;
 	size_t	start;
 	sem_t	*fork;
+	sem_t	*died;
 	sem_t	*wrt;
 }			t_set;
 
@@ -63,7 +64,7 @@ int		parsing(int ac, char **av, t_set **data);
 t_ph	*loding_philo(t_set *inf);
 size_t	now_time(void);
 void	free_ph(t_ph *ph, t_set *setting, int size);
-void	run_process(t_ph *ph, int size);
+void	run_process(t_ph *ph, int size, int i);
 void	ft_exit(t_ph *ph);
 void	*routine(void *arg);
 void	u_sleep(size_t time_u_want);
